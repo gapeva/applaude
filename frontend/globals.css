@@ -1,0 +1,214 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Applaude Design System ─────────────────────────────── */
+:root {
+  --applaude-blue: #007BFF;
+  --applaude-blue-dark: #0056B3;
+  --applaude-blue-glow: rgba(0, 123, 255, 0.35);
+  --applaude-pink: #FF2D87;
+  --applaude-navy: #0A1628;
+  --applaude-surface: #0D1F3C;
+  --applaude-border: #1A3A6B;
+  --terminal-bg: #0A0E1A;
+  --terminal-green: #00FF85;
+  --terminal-red: #FF4757;
+  --terminal-yellow: #FFD700;
+  --terminal-cyan: #00D4FF;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-applaude-navy text-white font-body antialiased;
+    background-image: 
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 123, 255, 0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0, 86, 179, 0.08) 0%, transparent 50%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(0, 123, 255, 0.35);
+    color: white;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--applaude-navy);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--applaude-border);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--applaude-blue);
+  }
+}
+
+@layer components {
+  /* ─── Buttons ─── */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-display font-semibold text-white transition-all duration-200;
+    background: linear-gradient(135deg, #007BFF, #0056B3);
+    box-shadow: 0 4px 24px rgba(0, 123, 255, 0.35);
+  }
+  .btn-primary:hover {
+    @apply scale-105;
+    box-shadow: 0 6px 32px rgba(0, 123, 255, 0.55);
+    background: linear-gradient(135deg, #339DFF, #007BFF);
+  }
+  .btn-primary:active {
+    @apply scale-95;
+    background: var(--applaude-pink);
+    box-shadow: 0 4px 24px rgba(255, 45, 135, 0.4);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-full font-display font-medium text-white/80 border border-applaude-border transition-all duration-200 hover:text-white hover:border-applaude-blue hover:bg-applaude-blue/10;
+  }
+
+  /* ─── Cards ─── */
+  .card {
+    @apply rounded-2xl border border-applaude-border/60 backdrop-blur-sm;
+    background: linear-gradient(145deg, rgba(13, 31, 60, 0.9) 0%, rgba(10, 22, 40, 0.95) 100%);
+  }
+
+  .card-glow {
+    box-shadow: 0 0 40px rgba(0, 123, 255, 0.08), 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  /* ─── Navigation ─── */
+  .nav-link {
+    @apply text-white/70 font-display font-medium text-sm transition-colors duration-200 hover:text-white relative;
+  }
+
+  .nav-link.active {
+    @apply text-white;
+  }
+
+  .nav-link.active::after {
+    content: '';
+    @apply absolute -bottom-1 left-0 right-0 h-0.5 rounded-full;
+    background: var(--applaude-blue);
+  }
+
+  .nav-link:hover,
+  .nav-link:active {
+    color: var(--applaude-pink) !important;
+  }
+
+  /* ─── Terminal ─── */
+  .terminal {
+    @apply font-mono text-sm;
+    background: var(--terminal-bg);
+    border: 1px solid rgba(0, 123, 255, 0.2);
+  }
+
+  .terminal-line {
+    @apply flex gap-2 items-start py-0.5;
+  }
+
+  .terminal-line .prefix {
+    color: var(--applaude-blue);
+    @apply select-none shrink-0;
+  }
+
+  .terminal-line.success .content { color: var(--terminal-green); }
+  .terminal-line.error .content { color: var(--terminal-red); }
+  .terminal-line.warning .content { color: var(--terminal-yellow); }
+  .terminal-line.info .content { color: var(--terminal-cyan); }
+  .terminal-line.default .content { @apply text-white/80; }
+
+  /* ─── Input Fields ─── */
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl border border-applaude-border bg-applaude-surface/50 text-white placeholder-white/30 font-body text-sm transition-all duration-200 outline-none;
+  }
+
+  .input-field:focus {
+    @apply border-applaude-blue;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.15);
+  }
+
+  /* ─── Badges ─── */
+  .badge {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-display font-medium;
+  }
+
+  .badge-blue {
+    @apply badge bg-applaude-blue/15 text-applaude-blue-light border border-applaude-blue/25;
+  }
+
+  .badge-green {
+    @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/25;
+  }
+
+  .badge-red {
+    @apply badge bg-red-500/15 text-red-400 border border-red-500/25;
+  }
+
+  /* ─── Gradient text ─── */
+  .gradient-text {
+    background: linear-gradient(135deg, #007BFF, #339DFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .gradient-text-pink {
+    background: linear-gradient(135deg, #FF2D87, #FF6BB0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ─── Monaco Editor Wrapper ─── */
+  .monaco-wrapper {
+    @apply rounded-xl overflow-hidden border border-applaude-border/60;
+  }
+
+  /* ─── Split Panel ─── */
+  .split-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    height: calc(100vh - 80px);
+  }
+
+  @media (max-width: 1024px) {
+    .split-panel {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ─── Loader / Pulse dot ─── */
+  .pulse-dot {
+    @apply w-2 h-2 rounded-full;
+    background: var(--terminal-green);
+    animation: pulse-dot 1.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+}
+
+/* ─── Monaco Editor Dark Overrides ──────────────────────── */
+.monaco-editor .margin,
+.monaco-editor-background {
+  background-color: #0A0E1A !important;
+}
