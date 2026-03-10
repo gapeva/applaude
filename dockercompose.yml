@@ -1,0 +1,61 @@
+version: "3.9"
+
+services:
+  # ─── Frontend (React/Vite) ───────────────────────────────
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+
+  # ─── Backend (FastAPI) ───────────────────────────────────
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ../backend:/app
+      - ../sandbox:/sandbox
+      - /var/run/docker.sock:/var/run/docker.sock  # DinD
+    depends_on:
+      - db
+
+  # ─── Production Database (PostgreSQL) ────────────────────
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: applaude_prod
+      POSTGRES_USER: applaude
+      POSTGRES_PASSWORD: applaude_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+  # ─── Sandbox Runner (Docker-in-Docker) ───────────────────
+  sandbox:
+    image: docker:24-dind
+    privileged: true
+    environment:
+      DOCKER_TLS_CERTDIR: ""
+    volumes:
+      - sandbox_data:/var/lib/docker
+      - ../sandbox:/sandbox
+    ports:
+      - "2375:2375"
+
+volumes:
+  pg_data:
+  sandbox_data:
