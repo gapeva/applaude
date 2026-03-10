@@ -1,0 +1,45 @@
+# Applaude Monorepo .gitignore
+
+# ─── CRITICAL: Never commit sandbox test databases ─────────
+sandbox/*/database.db
+sandbox/**/*.db
+database.db
+*.db
+
+# ─── Environment files ────────────────────────────────────
+.env
+.env.local
+.env.*.local
+config/.env
+!config/.env.template
+
+# ─── Frontend ─────────────────────────────────────────────
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ─── Backend ──────────────────────────────────────────────
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.pyc
+backend/.pytest_cache/
+backend/venv/
+backend/.venv/
+
+# ─── Sandbox (user repos and test data) ───────────────────
+sandbox/*/
+!sandbox/README.md
+
+# ─── Docker ───────────────────────────────────────────────
+.docker/
+
+# ─── OS ───────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# ─── IDE ──────────────────────────────────────────────────
+.vscode/settings.json
+.idea/
+*.code-workspace
