@@ -45,3 +45,48 @@ docker-compose -f config/docker-compose.yml up
 - `PAYSTACK_SECRET_KEY`
 - `DOCKER_HOST`
 - `DATABASE_URL` (Production PostgreSQL)
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Applaude Sandbox
+
+This directory contains isolated test environments for each user session.
+
+## Structure
+```
+sandbox/
+└── {user_id}/
+    └── {session_id}/
+        ├── repo/              # Cloned repository
+        │   ├── .env           # Modified: SQLite DB connection
+        │   └── .gitignore     # Modified: database.db added
+        ├── database.db        # Isolated SQLite test DB (NEVER pushed to GitHub)
+        ├── .env.original      # Backup of original .env for reversion
+        └── error_report.json  # Agent 1 output → Agent 2 input
+```
+
+## Security
+- Each sandbox runs in a **Docker-in-Docker (DinD)** container
+- **gVisor** (runsc) is used as the container runtime for kernel-level isolation
+- The 100k agents CANNOT escape the sandbox
+- `database.db` is **always** excluded from git commits via `.gitignore`
+
+## Lifecycle
+1. `create_session` → clone repo, swap DB, mount SQLite
+2. `run_pipeline` → Destroyer attacks, Surgeon heals
+3. `apply_fix` → Reversion Protocol → push clean code to GitHub
+4. `destroy_session` → delete all sandbox files
+
+## Hot Reload
+When Agent 2 (The Surgeon) patches a file, it emits a `file_update` WebSocket event.
+The frontend Monaco Editor listens for this and animates the code being written in real-time.
