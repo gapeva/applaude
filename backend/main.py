@@ -46,4 +46,8 @@ async def health():
 
 # The ASGI app exposed to uvicorn is the socket_app
 # so that WebSocket connections are handled by Socket.IO
+@app.get("/")
+async def root():
+    return {"message": "Applaude Backend"}
+
 asgi_app = socket_app
